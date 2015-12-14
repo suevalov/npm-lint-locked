@@ -1,0 +1,34 @@
+{
+  "name": "npm-lint-locked",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint lib test",
+    "test": "NODE_ENV=test mocha",
+    "test:watch": "NODE_ENV=test mocha --watch",
+    "prepublish": "npm run lint && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suevalov/npm-lint-locked.git"
+  },
+  "keywords": [
+    "locked",
+    "versions",
+    "npm",
+    "linter"
+  ],
+  "author": "Alexander Suevalov <suevalov.me@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suevalov/npm-lint-locked/issues"
+  },
+  "homepage": "https://github.com/suevalov/npm-lint-locked",
+  "devDependencies": {
+    "eslint": "1.10.3",
+    "expect": "1.13.2",
+    "mocha": "2.3.4"
+  },
+  "dependencies": {}
+}

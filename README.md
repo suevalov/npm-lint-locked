@@ -5,6 +5,8 @@ Simple linter for package versions in your package.json file. It's better to kee
 
 Of course, having concrete versions in your package.json file doesn't give you 100% sure, because a dependency with a specific version itself can depend on another packages with a version range.
 
+![npm-lint-locked](https://cloud.githubusercontent.com/assets/3672221/11880055/e7f4c224-a50f-11e5-99e0-9b08ddde8bc3.gif)
+
 But anyway, it's better to keep your package.json sane without versions range.
 
 Use [npm-lockdown](https://github.com/mozilla/npm-lockdown) in you want to have concrete subdependencies.
@@ -32,9 +34,7 @@ npm-lint-locked
 Use it in `npm scripts`:
 
 ```json
-...,
 "scripts": {
-  ...
   "lint": "./node_modules/.bin/npm-lint-locked",
   "prebuild": "npm run lint"
 }
@@ -43,14 +43,12 @@ Use it in `npm scripts`:
 or in your task runner, passing package.json explicitly:
 
 ```js
-
 var gulp = require('gulp');
 var npmLintLocked = require('npm-lint-locked');
 
 gulp.task('lintDependencies', function() {
   npmLintLocked(require('../package.json'));
 });
-
 ```
 
 ## License

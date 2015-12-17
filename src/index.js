@@ -1,32 +1,37 @@
-import fs from 'fs';
+/* eslint-disable no-console */
+
 import _ from 'lodash';
 import chalk from 'chalk';
 
-import { getDepsGroup } from './packageUtils';
+import { isValidVersion, Violations } from './packageUtils';
 
-export default function lintLocked(filePath, appender = global.console) {
+export default function lintLocked(packageJson = {}) {
 
-  const json = JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8' }));
-  appender.log(json);
+  console.log(`Analizing ${packageJson.name} package...`);
 
   const violations = [];
   const warnings = [];
 
-  [ 'production', 'development', 'optional' ].forEach((groupName) => {
+  [ 'devDependencies', 'dependencies', 'optionalDependencies' ].forEach((groupName) => {
 
-    const deps = _.pairs(getDepsGroup(groupName));
+    const deps = _.pairs(packageJson[groupName]);
 
     deps.forEach((pair) => {
 
       const [ name, version ] = pair;
 
-      if (version && version.indexOf('file:') === 0) {
-        warnings.push(`Your npm file has local dependency to ${version}. Don't commit it.`);
-      } else if (version && (version.indexOf('git:') === 0 || version.indexOf('git@') === 0)) {
-        warnings.push(`Your npm file has git dependency to ${version}. Don\'t commit it.`);
-      } else {
-        if (!version || _.isNaN(parseInt(version.charAt(0), 10))) {
-          violations.push(`Package ${name} should have fixed version. Current version is {version}`);
+      const isValid = isValidVersion(name, version);
+
+      if (isValid !== true) {
+        switch (isValid.type) {
+          case Violations.LOCAL_DEPENDENCY:
+            warnings.push(`Your npm file has local dependency: ${name}: ${version}.`);
+            break;
+          case Violations.GIT_DEPENDENCY:
+            warnings.push(`Your npm file has git dependency to ${name}: ${version}.`);
+            break;
+          default:
+            violations.push(`"${name}": "${version}"`);
         }
       }
 
@@ -35,16 +40,20 @@ export default function lintLocked(filePath, appender = global.console) {
   });
 
   if (warnings.length) {
-    appender.log(chalk.yellow(`Found ${warnings.length} warnings!`));
-    warnings.forEach((message) => appender.log(chalk.yellow(message)));
+    console.log(chalk.yellow(`Found ${warnings.length} warnings!`));
+    warnings.forEach((message) => console.log(chalk.yellow(message)));
+    console.log(chalk.yellow(`Don't commit it.`));
   }
 
   if (violations.length) {
-    appender.log(chalk.red(`Found ${violations.length} non-fixed dependencies!`));
-    violations.forEach((message) => appender.log(chalk.red(message)));
-    throw new Error(`You have ${violations.length} errors. Fix your package.json to proceed.`);
-  } else {
-    appender.log(chalk.green('Package.json is valid. Well done!'));
+    console.log(chalk.red(`Found ${violations.length} non-fixed dependencies!`));
+    violations.forEach((message) => console.log(chalk.red(message)));
+    console.error(`You have ${violations.length} errors. Fix your package.json to proceed.`);
+    process.exit();
+  }
+
+  if (violations.length === 0 && warnings.length === 0) {
+    console.log(chalk.green('Package.json is valid. Well done!'));
   }
 
 }

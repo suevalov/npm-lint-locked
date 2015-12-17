@@ -1,7 +1,7 @@
 {
   "name": "npm-lint-locked",
   "version": "0.1.0",
-  "description": "Simple linter for versions in your package.json. It's better to lock them.",
+  "description": "Simple linter for versions in your package.json. It's better to keep them locked.",
   "main": "./lib/index.js",
   "bin": "./lib/bin/cli.js",
   "scripts": {

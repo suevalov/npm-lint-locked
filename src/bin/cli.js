@@ -1,7 +1,9 @@
+#! /usr/bin/env node
+
 /* eslint-disable no-console */
 
 import { resolve } from 'path';
-import lintLocked from './index';
+import lintLocked from '../index';
 
 const packageFile = resolve('./package.json');
 let packageJson;

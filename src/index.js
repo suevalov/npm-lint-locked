@@ -5,7 +5,7 @@ import chalk from 'chalk';
 
 import { isValidVersion, Violations } from './packageUtils';
 
-export default function lintLocked(packageJson = {}) {
+module.exports = function lintLocked(packageJson = {}) {
 
   console.log(`Analizing ${packageJson.name} package...`);
 
@@ -56,4 +56,4 @@ export default function lintLocked(packageJson = {}) {
     console.log(chalk.green('Package.json is valid. Well done!'));
   }
 
-}
+};

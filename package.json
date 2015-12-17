@@ -1,8 +1,9 @@
 {
   "name": "npm-lint-locked",
   "version": "0.1.0",
-  "description": "",
-  "main": "lib/index.js",
+  "description": "Simple linter for versions in your package.json. It's better to lock them.",
+  "main": "./lib/index.js",
+  "bin": "./lib/bin/cli.js",
   "scripts": {
     "clean": "./node_modules/.bin/rimraf lib",
     "build": "./node_modules/.bin/babel src --out-dir lib",
@@ -26,6 +27,9 @@
   "bugs": {
     "url": "https://github.com/suevalov/npm-lint-locked/issues"
   },
+  "files": [
+    "lib"
+  ],
   "homepage": "https://github.com/suevalov/npm-lint-locked",
   "engines": {
     "node": ">=0.10"

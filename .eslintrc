@@ -2,5 +2,10 @@
   "extends": "eslint-config-airbnb/base",
   "env": {
     "node": true
+  },
+  "rules": {
+    "padded-blocks": 0,
+    "comma-dangle": [ 0, "never" ],
+    "array-bracket-spacing": 0
   }
 }
